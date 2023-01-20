@@ -20,12 +20,6 @@ terraform {
   }
 
   required_version = ">= 1.1.0"
-  cloud {
-    organization = "ZachChism"
-    workspaces {
-      name = "Terraform"
-    }
-  }
 }
 
 data "azurerm_client_config" "current" {}
