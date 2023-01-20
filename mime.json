@@ -1,0 +1,10 @@
+{
+    ".json":"application/json",
+    ".txt":"text/plain",
+    ".csv":"text/csv",
+    ".png":"image/png",
+    ".css":"text/css",
+    ".js":"application/x-javascript",
+    ".html":"text/html"
+   
+  }
