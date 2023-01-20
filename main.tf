@@ -1,5 +1,13 @@
 # Configure the Azure provider
 terraform {
+   backend "remote" {
+# The name of your Terraform Cloud organization.
+    organization = "ZachChism"
+# The name of the Terraform Cloud workspace to store Terraform state files in.
+         workspaces {
+           name = "Terraform"
+         }
+   }
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -350,26 +358,6 @@ resource "azurerm_key_vault_secret" "ks" {
   ]
 }
 
-resource "null_resource" "Python_secret_inject" {
-  provisioner "local-exec" {
-    command = <<EOT
-    $content = Get-Content -Path './Function/webapp/pyfile.py'
-    $newcontent = $content -replace 'key = ''','key = ''${azurerm_key_vault_secret.ks.value}' -replace 'endpoint = ''', 'endpoint = ''${azurerm_cosmosdb_account.db.endpoint}'
-    $newContent | Set-Content -Path './Function/webapp/__init__.py'
-    exit
-    EOT
-    interpreter = ["PowerShell", "-Command"]
-  }
-  depends_on = [
-    azurerm_key_vault_secret.ks,
-    //local.publish_code_command
-  ]
-  triggers = {
-    //python_code = local.publish_code_command
-    always_run = "${timestamp()}"
-  }
-}
-
 resource "null_resource" "pip" {
   triggers = {
     requirements_md5 = "${filemd5("${path.module}/Function/requirements.txt")}"
@@ -381,36 +369,4 @@ resource "null_resource" "pip" {
   depends_on = [
     null_resource.Python_secret_inject
   ]
-}
-
-
-resource "null_resource" "Python_secret_remove" {
-  provisioner "local-exec" {
-    command = <<EOT
-    Start-Sleep -Seconds 2
-    Remove-Item -Path './Function/webapp/__init__.py'
-    EOT
-    interpreter = ["PowerShell", "-Command"]
-  }
-  depends_on = [
-    azurerm_storage_blob.appcode,
-    null_resource.Python_secret_inject
-    //local.publish_code_command
-  ]
-  triggers = {
-    //python_code = local.publish_code_command
-    always_run = "${timestamp()}"
-  }
-}
-
-
-locals {
-    publish_code_command = "az functionapp deployment source config-zip --resource-group ${azurerm_resource_group.rg.name} --name ${azurerm_linux_function_app.fa.name} --src ${data.archive_file.file_fa.output_path} --build-remote true"
-    python_code_secret_inject = "pwsh -file ./Python_code.ps1"
-}
-
-resource "github_actions_secret" "github_ac_secret" {
-  repository       = "Cloud-Resume-Project"
-  secret_name      = "KeyVaultCosmosString"
-  plaintext_value  = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.kv.name};SecretName=${azurerm_key_vault_secret.ks.name})"
 }
