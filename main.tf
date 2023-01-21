@@ -70,14 +70,6 @@ provider "azurerm" {
 
 provider "github" {}
 
-data "archive_file" "file_fa" {
-  type = "zip"
-  //source_dir  = "${path.module}/Function"
-  source_dir  = data.null_data_source.wait_for_python_exec.outputs["source_dir"]
-  output_path = "${path.module}/Files/function-app.zip"
-  excludes    = ["${path.module}/Function//webapp/pyfile.py"]
-}
-
 # Create a resource group
 resource "azurerm_resource_group" "rg" {
   provider = azurerm.dev
@@ -131,20 +123,6 @@ resource "azurerm_storage_container" "appContainer" {
   name                  = "appcode"
   storage_account_name  = azurerm_storage_account.sa.name
   container_access_type = "blob"
-}
-
-# Create storage blob for app deploy files
-resource "azurerm_storage_blob" "appcode" {
-  provider               = azurerm.dev
-  name                   = "${filesha256(data.archive_file.file_fa.output_path)}.zip"
-  storage_account_name   = azurerm_storage_account.sa.name
-  storage_container_name = "appcode"
-  type                   = "Block"
-  access_tier            = "Cool"
-  source                 = data.archive_file.file_fa.output_path
-  depends_on = [
-    null_resource.Python_secret_inject
-  ]
 }
 
 # Create a read-only SAS for appcode
