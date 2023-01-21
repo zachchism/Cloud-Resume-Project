@@ -78,14 +78,6 @@ data "archive_file" "file_fa" {
   excludes    = ["${path.module}/Function//webapp/pyfile.py"]
 }
 
-data "null_data_source" "wait_for_python_exec" {
-  inputs = {
-    python_id = "${null_resource.Python_secret_inject.id}"
-
-    source_dir = "${path.module}/Function"
-  }
-}
-
 # Create a resource group
 resource "azurerm_resource_group" "rg" {
   provider = azurerm.dev
@@ -349,18 +341,5 @@ resource "azurerm_key_vault_secret" "ks" {
   key_vault_id = azurerm_key_vault.kv.id
   depends_on = [
     azurerm_key_vault_access_policy.kap_Tenant
-  ]
-}
-
-resource "null_resource" "pip" {
-  triggers = {
-    requirements_md5 = "${filemd5("${path.module}/Function/requirements.txt")}"
-  }
-  provisioner "local-exec" {
-    command     = "pip install --target='.python_packages/lib/site-packages' -r requirements.txt"
-    working_dir = "${path.module}/Function"
-  }
-  depends_on = [
-    null_resource.Python_secret_inject
   ]
 }
