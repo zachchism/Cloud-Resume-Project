@@ -104,7 +104,7 @@ jobs:
       id: TF_output
       run: | 
         echo ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $REPOSITORY_VAR
+        echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $GITHUB_OUTPUT
 
     # If you want to use Azure RBAC instead of Publish Profile, then uncomment the task below
     - name: 'Login via Azure CLI'
