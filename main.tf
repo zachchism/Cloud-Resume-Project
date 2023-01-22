@@ -263,6 +263,7 @@ resource "azurerm_linux_function_app" "fa" {
   ]
 }
 
+# Create key vault for storing CosmosDB Secret
 resource "azurerm_key_vault" "kv" {
   provider                    = azurerm.dev
   name                        = "${var.env_name}-${var.keyvault_name}"
