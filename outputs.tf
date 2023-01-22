@@ -1,4 +1,4 @@
-output "resource_group_id" {
+output "dev_rg_id" {
   value = azurerm_resource_group.rg.id
 }
 
@@ -18,4 +18,8 @@ output "cosmosdb_connectionstrings" {
 
 output "KS" {
   value = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.kv.name};SecretName=${azurerm_key_vault_secret.ks.name})"
+}
+
+output "Dev_sub_id"{
+  value = "e35508e3-9fd2-4e6a-9efc-a8f3c746f051"
 }
