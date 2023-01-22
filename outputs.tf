@@ -1,5 +1,5 @@
 output "dev_rg_id" {
-  value = azurerm_resource_group.rg.id
+  value = azurerm_resource_group.rg.name
 }
 
 output "function_app_name" {
