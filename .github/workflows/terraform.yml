@@ -100,4 +100,4 @@ jobs:
       id: TF_output
       run: | 
         echo ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $GITHUB_OUTPUT
+        echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $REPOSITORY_VAR
