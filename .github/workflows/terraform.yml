@@ -94,7 +94,7 @@ jobs:
       run: |
         terraform apply -auto-approve -input=false
         echo $(terraform output function_app_name)
-        #echo "TF_AZ_FUNC=$(terraform output function_app_name)" >> $GITHUB_ENV
+        echo "TF_AZ_FUNC=$(terraform output -raw function_app_name)" >> $GITHUB_ENV
         
     - name: Terraform Echo Check
       run: echo $TF_AZ_FUNC
