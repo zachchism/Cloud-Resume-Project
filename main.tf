@@ -222,6 +222,7 @@ resource "azurerm_service_plan" "sp" {
   sku_name            = "Y1"
 }
 
+# Create App Insights for function app
 resource "azurerm_application_insights" "appinsight" {
   provider            = azurerm.dev
   name                = "${var.env_name}_${var.app_insight_name}"
