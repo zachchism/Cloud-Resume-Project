@@ -93,5 +93,6 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: |
         terraform apply -auto-approve -input=false
-        echo "TF_AZ_FUNC=$(terraform output function_app_name)" >> $GITHUB_ENV
+        echo $(terraform output function_app_name)
+        #echo "TF_AZ_FUNC=$(terraform output function_app_name)" >> $GITHUB_ENV
         echo "${{ env.TF_AZ_FUNC }}"
