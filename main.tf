@@ -159,7 +159,6 @@ resource "azurerm_cosmosdb_account" "db" {
   analytical_storage_enabled        = false
   local_authentication_disabled     = false
 
-
   capabilities {
     name = "EnableServerless"
   }
