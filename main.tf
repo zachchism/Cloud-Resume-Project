@@ -246,7 +246,8 @@ resource "azurerm_linux_function_app" "fa" {
     //"FUNCTIONS_WORKER_RUNTIME" = "python",
     //"AzureWebJobsDisableHomepage" = "true",
     "CosmosDBConnection"       = "AccountEndpoint=${azurerm_cosmosdb_account.db.endpoint};AccountKey=${azurerm_cosmosdb_account.db.primary_key};"
-    "CosmosDbConnectionString" = "AccountEndpoint=${azurerm_cosmosdb_account.db.endpoint};AccountKey=${azurerm_cosmosdb_account.db.primary_key};"
+    "CosmosDbConnectionString" = "${azurerm_cosmosdb_account.db.endpoint}"
+    "KeyVaultRef"              = "@Microsoft.KeyVault(VaultName=${azurerm_key_vault.kv.name};SecretName=${azurerm_key_vault_secret.ks.name})"
   }
   site_config {
     application_stack {
