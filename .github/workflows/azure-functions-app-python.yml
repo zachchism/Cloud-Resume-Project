@@ -57,6 +57,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt --target=".python_packages/lib/site-packages"
         popd
+        echo ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }}
 
     - name: 'Run Azure Functions Action'
       uses: Azure/functions-action@v1
