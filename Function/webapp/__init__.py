@@ -4,6 +4,8 @@ import azure.functions as func
 
 from azure.cosmos import CosmosClient, PartitionKey
 
+import os
+
 import json
 
 def upsert_item(container, doc_id):
@@ -27,8 +29,8 @@ def upsert_item(container, doc_id):
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
-    endpoint = 'os.environ['CosmosDbConnectionString']'
-    key = 'os.environ['KeyVaultRef']'
+    endpoint = 'os.environ["CosmosDbConnectionString"]'
+    key = 'os.environ["KeyVaultRef"]'
     client = CosmosClient(url=endpoint, credential=key)
     db = client.create_database_if_not_exists(id='visitors_db')
     # setup container for this sample
