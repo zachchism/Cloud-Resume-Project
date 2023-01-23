@@ -161,6 +161,7 @@ jobs:
           find: 'const api_url = "";'
           replace: 'const api_url = "${{ steps.functionAppInvokeRetrieval.outputs.AZ_FUNCTION_URL }}";'
           include: "${{ github.workspace }}/Static/script.js"
+          regex: false
           
     - name: LS
       run: ls ${{ github.workspace }}
