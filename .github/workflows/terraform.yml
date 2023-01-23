@@ -159,7 +159,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
           find: 'const api_url = "";'
-          replace: 'const api_url = "";'
+          replace: 'const api_url = "${{ steps.functionAppInvokeRetrieval.outputs.AZ_FUNCTION_URL }}";'
           include: "script.js"
           
     - name: Upload updated java.css
