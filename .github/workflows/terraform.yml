@@ -162,5 +162,8 @@ jobs:
           replace: 'const api_url = "${{ steps.functionAppInvokeRetrieval.outputs.AZ_FUNCTION_URL }}";'
           include: "${{ github.workspace }}/**"
           
+    - name: LS
+      run: ls ${{ github.workspace }}
+          
     - name: Upload updated java.css
       run: az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ${{ github.workspace }}/Static/script.js -n script.js --overwrite
