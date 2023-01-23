@@ -163,4 +163,4 @@ jobs:
           include: "script.js"
           
     - name: Upload updated java.css
-      run: az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ./Static/script.js -n script.js
+      run: az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ./Static/script.js -n script.js --overwrite
