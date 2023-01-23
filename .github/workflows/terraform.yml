@@ -107,6 +107,8 @@ jobs:
         echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $GITHUB_OUTPUT
         echo "AZURE_DEV_SUB_ID=$(terraform output -raw Dev_sub_id)" >> $GITHUB_OUTPUT
         echo "AZURE_DEV_RG_ID=$(terraform output -raw dev_rg_id)" >> $GITHUB_OUTPUT
+        echo "AZURE_SA_NAME=$(terraform output -raw storage_account_name)" >> $GITHUB_OUTPUT
+        echo "AZURE_SA_KEY=$(terraform output -raw storage_account_key)" >> $GITHUB_OUTPUT
 
     # If you want to use Azure RBAC instead of Publish Profile, then uncomment the task below
     - name: 'Login via Azure CLI'
@@ -147,3 +149,18 @@ jobs:
         publish-profile: ${{ steps.publishProfileRetrieval.outputs.publishProfiles }} # Remove publish-profile to use Azure RBAC
         scm-do-build-during-deployment: true
         enable-oryx-build: true
+        
+    - name: Grab AZ FunctionApp InvokeURL
+      id: functionAppInvokeRetrieval
+      run: echo "AZ_FUNCTION_URL=$(az functionapp function show --name ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }} --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --function-name webapp --query "invokeUrlTemplate" --output tsv) >> $GITHUB_OUTPUT
+      
+    - name: Inject InvokeURL into java.css code
+      id: invokeURLInjection
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+          find: 'const api_url = "";'
+          replace: 'const api_url = "";'
+          include: "script.js"
+          
+    - name: Upload updated java.css
+      run: az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name `$web -f ./Static/java.css -n java.css
