@@ -23,3 +23,11 @@ output "KS" {
 output "Dev_sub_id" {
   value = "e35508e3-9fd2-4e6a-9efc-a8f3c746f051"
 }
+
+output "storage_account_name" {
+  value = "${azurerm_storage_account.sa.name}"
+}
+
+output "storage_account_key" {
+  value = "${azurerm_storage_account.sa.primary_access_key}"
+}

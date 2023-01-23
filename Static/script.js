@@ -1,6 +1,5 @@
 // api url
-const api_url =
-	"https://zachchismapp.azurewebsites.net/api/VisitIncriment";
+const api_url = "";
 
 function returnCounter(){
 getapi(api_url).then(apiresult =>{
