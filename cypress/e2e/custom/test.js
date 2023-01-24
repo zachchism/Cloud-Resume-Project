@@ -1,11 +1,11 @@
 /// <reference types="Cypress" />
 describe('My First Test', () => {
   it('finds the title "type"', () => {
-    cy.visit('https://zachchismstorage.z13.web.core.windows.net/')
+    cy.visit(Cypress.env('DEV_URL')
     cy.wait(2000)
     cy.get('#Counter').then(($counter) => {
       let value = parseInt($counter.text());
-      cy.visit('https://zachchismstorage.z13.web.core.windows.net/')
+      cy.visit(Cypress.env('DEV_URL')
       cy.wait(2000)
       cy.get('#Counter').then(($counter2) =>{
       let value2 = parseInt($counter2.text());
