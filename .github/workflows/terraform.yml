@@ -178,6 +178,7 @@ jobs:
           spec: cypress/e2e/custom/test.js
           tag: DEV
           browser: chrome
+          record: true
       env:
         DEV_URL: ${{ steps.getstoragesurl.outputs.AZ_STORAGE_URL }}
         CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
