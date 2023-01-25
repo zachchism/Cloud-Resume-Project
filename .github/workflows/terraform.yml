@@ -178,7 +178,7 @@ jobs:
     - name: Cypress run
       uses: cypress-io/github-action@v5
       with:
-          spec: cypress/e2e/custom/test.js
+          spec: cypress/e2e/custom/test.cy.js
           tag: DEV
           browser: chrome
           record: true
