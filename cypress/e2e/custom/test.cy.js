@@ -4,12 +4,12 @@ describe('My First Test', () => {
 	cy.visit(Cypress.env('DEV_URL')),  
     cy.wait(5000)
     cy.get('#Counter').then(($counter) => {
-      let value = parseInt($counter.text());
+      const value = parseInt($counter.text())
       })
 	cy.visit(Cypress.env('DEV_URL')), 
     cy.wait(5000)
     cy.get('#Counter').then(($counter2) => {
-    let value2 = parseInt($counter2.text())
+    const value2 = parseInt($counter2.text())
 	expect(value2).to.eq(value + 1)
       })
     })	
