@@ -9,7 +9,7 @@ describe('My First Test', () => {
       cy.wait(2000),
       cy.get('#Counter').then(($counter2) =>{
       let value2 = parseInt($counter2.text());
-      expect(value2).to.eq(value + 1);
+      expect(value2).to.eq(value + 1),
       })
     })
   })
