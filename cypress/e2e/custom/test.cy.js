@@ -1,19 +1,12 @@
 /// <reference types="Cypress" />
-describe('My First Test', () => {
-	
-	context('Actions', () => {
-  beforeEach(() => {
-    cy.visit(Cypress.env('DEV_URL'))
-  })
-  
-  it('Gets initial value of counter', () => {
+describe('My First Test', () => {  
+  it('Gets value of counter', () => {
+	cy.visit(Cypress.env('DEV_URL')),  
     cy.wait(2000)
     cy.get('#Counter').then(($counter) => {
-      let value = parseInt($counter.text())
+      let value = parseInt($counter.text());
       })
-    })
-	
-  it('Gets final value of counter', () => {
+	cy.visit(Cypress.env('DEV_URL')), 
     cy.wait(2000)
     cy.get('#Counter').then(($counter2) => {
     let value2 = parseInt($counter2.text())
@@ -21,4 +14,3 @@ describe('My First Test', () => {
       })
     })	
   })
-})
