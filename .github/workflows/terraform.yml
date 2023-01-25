@@ -173,12 +173,12 @@ jobs:
       run:  echo "AZ_STORAGE_URL=$(az storage account show --name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --query "primaryEndpoints.web" --output tsv)" >> $GITHUB_OUTPUT 
    
     - name: Show build files (before)
-      run: ls ${{github.workspace}}
+      run: ls ${{github.workspace}}/cypress/e2e/custom/
    
     - name: Cypress run
       uses: cypress-io/github-action@v5
       with:
-          spec: test.js
+          spec: cypress/e2e/custom/test.js
           tag: DEV
           browser: chrome
           record: true
