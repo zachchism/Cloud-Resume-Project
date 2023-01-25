@@ -60,7 +60,7 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    environment: production
+    environment: dev
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -167,5 +167,24 @@ jobs:
    
     - name: Upload updated java.css
       run: az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ${{ github.workspace }}/Static/script.js -n script.js --overwrite
+    
+    - name: Get storage account URL
+      id: getstoragesurl
+      run:  echo "AZ_STORAGE_URL=$(az storage account show --name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --query "primaryEndpoints.web" --output tsv)" >> $GITHUB_OUTPUT 
+   
+    - name: Show build files (before)
+      run: ls ${{github.workspace}}/cypress/e2e/custom/
+   
+    - name: Cypress run
+      uses: cypress-io/github-action@v5
+      with:
+          spec: cypress/e2e/custom/test.cy.js
+          tag: DEV
+          browser: chrome
+          record: true
+      env:
+        DEV_URL: ${{ steps.getstoragesurl.outputs.AZ_STORAGE_URL }}
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
       
       
