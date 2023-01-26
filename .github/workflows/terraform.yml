@@ -105,7 +105,7 @@ jobs:
       
     # Destroys current TF resources to ensure clean environment
     - name: Terraform Destroy
-      run: terraform destroy -force
+      run: terraform apply -destroy -auto-approve
       
     # Generates an execution plan for Terraform
     #- name: Terraform Plan
