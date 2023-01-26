@@ -103,6 +103,10 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
       
+    # Destroys current TF resources to ensure clean environment
+    - name: Terraform Destroy
+      run: terraform destroy -force
+      
     # Generates an execution plan for Terraform
     #- name: Terraform Plan
       #run: terraform plan -input=false
