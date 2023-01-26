@@ -55,6 +55,7 @@ permissions:
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'Function'       # set this to the path to your function app project, defaults to the repository root
   PYTHON_VERSION: '3.9'                     # set this to the python version to use (e.g. '3.6', '3.7', '3.8')
+  TF_WORKSPACE: 'dev'
 
 jobs:
   terraform:
@@ -88,7 +89,7 @@ jobs:
       run: terraform fmt -check
       
     - name: Terraform Workspace
-      run: terraform workspace select dev || terraform workspace new dev
+      run: terraform workspace select ${{ env.TF_WORKSPACE }} || terraform workspace new ${{ env.TF_WORKSPACE }}
     # Generates an execution plan for Terraform
     #- name: Terraform Plan
       #run: terraform plan -input=false
