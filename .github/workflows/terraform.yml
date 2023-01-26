@@ -88,8 +88,6 @@ jobs:
     - name: Terraform Format
       run: terraform fmt -check
       
-    - name: Terraform Workspace
-      run: terraform workspace select ${{ env.TF_WORKSPACE }} || terraform workspace new ${{ env.TF_WORKSPACE }}
     # Generates an execution plan for Terraform
     #- name: Terraform Plan
       #run: terraform plan -input=false
