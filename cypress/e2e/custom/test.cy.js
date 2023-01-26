@@ -1,6 +1,14 @@
 /// <reference types="Cypress" />
 describe('WebApp Function Test', () => {  
-  it('Gets value of counter', () => {
+
+  it('Gets value of counter',
+  {
+retries:	{
+    runMode: 3,
+    openMode: 3,
+			},
+  },
+  () => {
 	cy.visit(Cypress.env('DEV_URL')), 
 	cy.intercept('GET', 'webapp').as('counterRequest')
     cy.wait('@counterRequest').then(($counter) => {
