@@ -1,6 +1,6 @@
 location              = "eastus"
 resource_group_name   = "ResourceGroup"
-storage_account_name  = "zachchismprodstorage2"
+storage_account_name  = "zachchismstorage2"
 cosmos_db_name        = "zachchism-cosmos-db2"
 cosmosdb_sql_name     = "visitors_db"
 cosmosdb_cont_name    = "Visitors"
