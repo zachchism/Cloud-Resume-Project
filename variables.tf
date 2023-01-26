@@ -78,3 +78,8 @@ variable "env_name" {
   description = "Name of the environment"
   type        = string
 }
+
+variable "sub_id" {
+  description = "Name of the subscription"
+  type        = string
+}
