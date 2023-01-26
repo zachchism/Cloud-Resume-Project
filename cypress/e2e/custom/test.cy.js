@@ -1,5 +1,5 @@
 /// <reference types="Cypress" />
-describe('My First Test', () => {  
+describe('WebApp Function Test', () => {  
   it('Gets value of counter', () => {
 	cy.visit(Cypress.env('DEV_URL')),  
     cy.wait(2000)
