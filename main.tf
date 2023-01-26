@@ -5,7 +5,7 @@ terraform {
     organization = "ZachChism"
     # The name of the Terraform Cloud workspace to store Terraform state files in.
     workspaces {
-      name = var.env_name
+      name = "Terraform"
     }
   }
   required_providers {
