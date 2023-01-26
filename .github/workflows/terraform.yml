@@ -78,6 +78,22 @@ jobs:
       with:
         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
         terraform_wrapper: false
+    
+    - name: Inject TF Variables into env.auto.tfvars
+      id: tfenvinjection
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+          find: 'env_name              = ""'
+          replace: 'env_name              = "dev"'
+          regex: false
+          
+    - name: Inject TF Variables into env.auto.tfvars
+      id: tfsubinjection
+      uses: jacobtomlinson/gha-find-replace@v2
+      with:
+          find: 'sub_id                = ""'
+          replace: 'sub_id                = "e35508e3-9fd2-4e6a-9efc-a8f3c746f051"'
+          regex: false
 
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
@@ -96,7 +112,7 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: |
-        terraform apply -auto-approve -input=false -var env_name="dev" -var sub_id="e35508e3-9fd2-4e6a-9efc-a8f3c746f051"
+        terraform apply -auto-approve -input=false
         echo $(terraform output function_app_name)
         echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $GITHUB_ENV
         
