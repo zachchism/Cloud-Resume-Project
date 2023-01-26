@@ -31,7 +31,7 @@ locals {
 provider "azurerm" {
   alias = "dev"
 
-  subscription_id = var.dev_sub_id
+  subscription_id = var.sub_id
   //tenant_id       = var.dev_tenant_id
   //client_id       = var.dev_client_id
   //client_secret   = var.dev_client_secret
