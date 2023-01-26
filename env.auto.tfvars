@@ -10,7 +10,7 @@ function_app_name     = "zachchismfuncapp3"
 function_name         = "VisitIncriment2"
 keyvault_name         = "zachchismkeyvault3"
 app_insight_name      = "appInsights"
-env_name              = "dev"
+#env_name              = "dev"
 prod_sub_id           = "5d7cc1a9-adf2-4194-95b7-f65a147f793e"
 dev_sub_id            = "e35508e3-9fd2-4e6a-9efc-a8f3c746f051"
 
