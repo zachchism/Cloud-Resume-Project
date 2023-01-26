@@ -73,7 +73,7 @@ provider "github" {}
 # Create a resource group
 resource "azurerm_resource_group" "rg" {
   provider = azurerm.dev
-  name     = "${var.env_name}_${var.resource_group_name}"
+  name     = "${terraform.workspace}_${var.resource_group_name}"
   location = "eastus2"
 
   tags = {
@@ -85,7 +85,7 @@ resource "azurerm_resource_group" "rg" {
 # Create a storage account
 resource "azurerm_storage_account" "sa" {
   provider                 = azurerm.dev
-  name                     = "${var.env_name}${var.storage_account_name}"
+  name                     = "${terraform.workspace}${var.storage_account_name}"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
@@ -146,7 +146,7 @@ data "azurerm_storage_account_blob_container_sas" "storage_account_blob_containe
 # Create a CosmosDB Account
 resource "azurerm_cosmosdb_account" "db" {
   provider            = azurerm.dev
-  name                = "${var.env_name}-${var.cosmos_db_name}"
+  name                = "${terraform.workspace}-${var.cosmos_db_name}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   offer_type          = "Standard"
@@ -215,7 +215,7 @@ resource "azurerm_cosmosdb_sql_container" "container" {
 # Create a service plan for
 resource "azurerm_service_plan" "sp" {
   provider            = azurerm.dev
-  name                = "${var.env_name}_${var.app_service_plan_name}"
+  name                = "${terraform.workspace}_${var.app_service_plan_name}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   os_type             = "Linux"
@@ -225,7 +225,7 @@ resource "azurerm_service_plan" "sp" {
 # Create App Insights for function app
 resource "azurerm_application_insights" "appinsight" {
   provider            = azurerm.dev
-  name                = "${var.env_name}_${var.app_insight_name}"
+  name                = "${terraform.workspace}_${var.app_insight_name}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   application_type    = "other"
@@ -234,7 +234,7 @@ resource "azurerm_application_insights" "appinsight" {
 
 resource "azurerm_linux_function_app" "fa" {
   provider                   = azurerm.dev
-  name                       = "${var.env_name}-${var.function_app_name}"
+  name                       = "${terraform.workspace}-${var.function_app_name}"
   resource_group_name        = azurerm_resource_group.rg.name
   location                   = azurerm_resource_group.rg.location
   storage_account_name       = azurerm_storage_account.sa.name
@@ -267,7 +267,7 @@ resource "azurerm_linux_function_app" "fa" {
 # Create key vault for storing CosmosDB Secret
 resource "azurerm_key_vault" "kv" {
   provider                    = azurerm.dev
-  name                        = "${var.env_name}-${var.keyvault_name}"
+  name                        = "${terraform.workspace}-${var.keyvault_name}"
   location                    = azurerm_resource_group.rg.location
   resource_group_name         = azurerm_resource_group.rg.name
   enabled_for_disk_encryption = true
