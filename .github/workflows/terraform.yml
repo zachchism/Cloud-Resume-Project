@@ -96,7 +96,7 @@ jobs:
     - name: Terraform Apply
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
       run: |
-        terraform apply -auto-approve -input=false -var env_name="dev" sub_id="${{ secrets.TF_DEV_SUB_ID }}"
+        terraform apply -auto-approve -input=false -var env_name="dev" -var sub_id="e35508e3-9fd2-4e6a-9efc-a8f3c746f051"
         echo $(terraform output function_app_name)
         echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $GITHUB_ENV
         
