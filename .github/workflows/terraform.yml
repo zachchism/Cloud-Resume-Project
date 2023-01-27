@@ -121,8 +121,8 @@ jobs:
     
     
        # terraform state list
-    - name: terraform state list
-      run: terraform state list
+    #- name: terraform state list
+    #  run: terraform state list
     
       
     # Generates an execution plan for Terraform
