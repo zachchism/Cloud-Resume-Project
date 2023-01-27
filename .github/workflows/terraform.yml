@@ -135,8 +135,8 @@ jobs:
       run: | 
         echo ${{ env.AZURE_FUNCTIONAPP_NAME }}
         echo "AZURE_FUNCTIONAPP_NAME=$(terraform output -raw function_app_name)" >> $GITHUB_OUTPUT
-        echo "AZURE_DEV_SUB_ID=$(terraform output -raw Dev_sub_id)" >> $GITHUB_OUTPUT
-        echo "AZURE_DEV_RG_ID=$(terraform output -raw dev_rg_id)" >> $GITHUB_OUTPUT
+        echo "AZURE_DEV_SUB_ID=$(terraform output -raw sub_id)" >> $GITHUB_OUTPUT
+        echo "AZURE_DEV_RG_ID=$(terraform output -raw rg_id)" >> $GITHUB_OUTPUT
         echo "AZURE_SA_NAME=$(terraform output -raw storage_account_name)" >> $GITHUB_OUTPUT
         echo "AZURE_SA_KEY=$(terraform output -raw storage_account_key)" >> $GITHUB_OUTPUT
 
