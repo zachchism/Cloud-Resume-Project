@@ -125,6 +125,16 @@ resource "azurerm_storage_container" "appContainer" {
   container_access_type = "blob"
 }
 
+# Create storage blob for app deploy files
+resource "azurerm_storage_blob" "appcode" {
+  provider               = azurerm.dev
+  name                   = "release.zip"
+  storage_account_name   = azurerm_storage_account.sa.name
+  storage_container_name = "appcode"
+  type                   = "Block"
+  access_tier            = "Cool"
+}
+
 # Create a read-only SAS for appcode
 data "azurerm_storage_account_blob_container_sas" "storage_account_blob_container_sas2" {
   connection_string = azurerm_storage_account.sa.primary_connection_string
