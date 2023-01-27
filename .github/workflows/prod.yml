@@ -89,7 +89,7 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@v2
       with:
           find: 'sub_id                = ""'
-          replace: 'sub_id                = "e35508e3-9fd2-4e6a-9efc-a8f3c746f051"'
+          replace: 'sub_id                = "5d7cc1a9-adf2-4194-95b7-f65a147f793e"'
           regex: false
           
     - name: Inject TF Variables into main.tf
