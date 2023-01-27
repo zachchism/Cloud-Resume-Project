@@ -169,7 +169,7 @@ jobs:
             
     - name: Copy files to folder
       run:  |
-            cp ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/* ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
+            cp ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/. ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
             
     - name: Show build files (before)
       run: ls ${{github.workspace}}/Function/Empty
