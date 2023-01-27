@@ -136,7 +136,7 @@ resource "azurerm_storage_blob" "appcode" {
 }
 
 # Create a read-only SAS for appcode
-data "azurerm_storage_account_blob_container_sas" "storage_account_blob_container_sas2" {
+data "azurerm_storage_account_blob_container_sas" "storage_account_blob_container_sas" {
   connection_string = azurerm_storage_account.sa.primary_connection_string
   container_name    = azurerm_storage_container.appContainer.name
 
@@ -252,7 +252,7 @@ resource "azurerm_linux_function_app" "fa" {
   service_plan_id            = azurerm_service_plan.sp.id
 
   app_settings = {
-    //"WEBSITE_RUN_FROM_PACKAGE"    = "https://${azurerm_storage_account.sa.name}.blob.core.windows.net/${azurerm_storage_container.appContainer.name}/${azurerm_storage_blob.appcode.name}${data.azurerm_storage_account_blob_container_sas.storage_account_blob_container_sas2.sas}",
+    "WEBSITE_RUN_FROM_PACKAGE" = "https://${azurerm_storage_account.sa.name}.blob.core.windows.net/${azurerm_storage_container.appContainer.name}/${azurerm_storage_blob.appcode.name}${data.azurerm_storage_account_blob_container_sas.storage_account_blob_container_sas.sas}",
     //"FUNCTIONS_WORKER_RUNTIME" = "python",
     //"AzureWebJobsDisableHomepage" = "true",
     "CosmosDBConnection"       = "AccountEndpoint=${azurerm_cosmosdb_account.db.endpoint};AccountKey=${azurerm_cosmosdb_account.db.primary_key};"
