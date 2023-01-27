@@ -106,6 +106,16 @@ jobs:
     # Destroys current TF resources to ensure clean environment
     #- name: Terraform Destroy
     #  run: terraform apply -destroy -auto-approve
+    
+        # Destroys function app to kleep clean deployment
+    - name: Terraform Destroy function app
+      run: terraform apply -destroy -target azurerm_linux_function_app.fa  -auto-approve   
+    
+    
+       # terraform state list
+    - name: terraform state list
+      run: terraform state list
+    
       
     # Generates an execution plan for Terraform
     #- name: Terraform Plan
