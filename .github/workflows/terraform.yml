@@ -108,12 +108,12 @@ jobs:
     #  run: terraform apply -destroy -auto-approve
     
         # Destroys function app to kleep clean deployment
-    - name: Terraform state list
-      run: terraform apply -destroy -target azurerm_linux_function_app.dev-zachchismfuncapp3  -auto-approve   
+    - name: Terraform Destroy function app
+      run: terraform apply -destroy -target azurerm_linux_function_app.fa  -auto-approve   
     
     
        # terraform state list
-    - name: Terraform Destroy function app
+    - name: terraform state list
       run: terraform state list
     
       
