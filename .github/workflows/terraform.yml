@@ -167,6 +167,10 @@ jobs:
       run: |
             mkdir ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
             
+    - name: Copy files to folder
+      run:  |
+            cp ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/package.json ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
+            
     - name: 'Create Empty Zip'
       uses: thedoctor0/zip-release@0.7.0
       with:
