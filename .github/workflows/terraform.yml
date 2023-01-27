@@ -164,7 +164,7 @@ jobs:
       run: ls ${{github.workspace}}/Function/
         
     - name: 'Publish AZ Function'   
-      run: az functionapp deployment source config-zip --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --name ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --src ' ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/.release.zip' --build-remote true  
+      run: az functionapp deployment source config-zip --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --name ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --src '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/.release.zip' --build-remote true  
         
         
     - name: Retrieve publish profile for deployment
