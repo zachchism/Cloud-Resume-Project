@@ -44,8 +44,14 @@
 
 name: 'Prod'
 
-on: [workflow_dispatch]
-
+on:
+  # the 1st condition
+  workflow_run:
+    workflows: ["Dev"]
+    branches: ["master"]
+    types:
+      - completed
+      
 permissions:
   contents: read
 
@@ -56,6 +62,7 @@ env:
 jobs:
   terraform:
     name: 'Terraform'
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment: prod
 
