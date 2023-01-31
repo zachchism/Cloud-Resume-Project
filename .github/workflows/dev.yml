@@ -248,8 +248,11 @@ jobs:
           
     
    
-    - name: Upload updated java.css
-      run: az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ${{ github.workspace }}/Static/script.js -n script.js --overwrite
+    - name: Upload updated java.css and site files
+      run: |
+        az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ${{ github.workspace }}/Static/script.js -n script.js --overwrite
+        az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ${{ github.workspace }}/Static/_index.html -n _index.html --overwrite
+        az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ${{ github.workspace }}/Static/style.css -n style.css --overwrite
     
     - name: Get storage account URL
       id: getstoragesurl
