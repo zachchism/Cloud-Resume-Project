@@ -1,47 +1,3 @@
-# This workflow installs the latest version of Terraform CLI and configures the Terraform CLI configuration file
-# with an API token for Terraform Cloud (app.terraform.io). On pull request events, this workflow will run
-# `terraform init`, `terraform fmt`, and `terraform plan` (speculative plan via Terraform Cloud). On push events
-# to the "master" branch, `terraform apply` will be executed.
-#
-# Documentation for `hashicorp/setup-terraform` is located here: https://github.com/hashicorp/setup-terraform
-#
-# To use this workflow, you will need to complete the following setup steps.
-#
-# 1. Create a `main.tf` file in the root of this repository with the `remote` backend and one or more resources defined.
-#   Example `main.tf`:
-#     # The configuration for the `remote` backend.
-#     terraform {
-#       backend "remote" {
-#         # The name of your Terraform Cloud organization.
-#         organization = "example-organization"
-#
-#         # The name of the Terraform Cloud workspace to store Terraform state files in.
-#         workspaces {
-#           name = "example-workspace"
-#         }
-#       }
-#     }
-#
-#     # An example resource that does nothing.
-#     resource "null_resource" "example" {
-#       triggers = {
-#         value = "A example resource that does nothing!"
-#       }
-#     }
-#
-#
-# 2. Generate a Terraform Cloud user API token and store it as a GitHub secret (e.g. TF_API_TOKEN) on this repository.
-#   Documentation:
-#     - https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html
-#     - https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
-#
-# 3. Reference the GitHub secret in step using the `hashicorp/setup-terraform` GitHub Action.
-#   Example:
-#     - name: Setup Terraform
-#       uses: hashicorp/setup-terraform@v1
-#       with:
-#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
 name: 'Dev'
 
 on:
@@ -110,24 +66,10 @@ jobs:
     # Checks that all Terraform configuration files adhere to a canonical format
     - name: Terraform Format
       run: terraform fmt -check
-      
-    # Destroys current TF resources to ensure clean environment
-    #- name: Terraform Destroy
-    #  run: terraform apply -destroy -auto-approve
     
         # Destroys function app to kleep clean deployment
     - name: Terraform Destroy function app
       run: terraform apply -destroy -target azurerm_linux_function_app.fa  -auto-approve   
-    
-    
-       # terraform state list
-    #- name: terraform state list
-    #  run: terraform state list
-    
-      
-    # Generates an execution plan for Terraform
-    #- name: Terraform Plan
-      #run: terraform plan -input=false
 
       # On push to "master", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
@@ -158,33 +100,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.PYTHON_VERSION }}
-   
-    - name: Empty publish folder make    
-      run: |
-            mkdir ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
-            
-    - name: Copy files to folder
-      run:  |
-            cp ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/host.json ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
-            cp ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/package.json ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
-            cp ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/requirements.txt ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty
-            
-    - name: Show build files (before)
-      run: ls ${{github.workspace}}/Function/Empty
-            
-    - name: 'Create Empty Zip'
-      uses: thedoctor0/zip-release@0.7.0
-      with:
-        type: 'zip'
-        filename: 'empty.zip'
-        directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty      
-        
-    #- name: 'Publish Empty AZ Function'   
-    #  run: az functionapp deployment source config-zip --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --name ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --src '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty/empty.zip' --build-remote true --debug     
      
-    - name: Remove empty folder
-      run: rm -r ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/Empty      
-      
     - name: Add CORS
       run: az functionapp cors add --name ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }} --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --allowed-origins '*'    
 
@@ -203,14 +119,7 @@ jobs:
         type: 'zip'
         filename: 'release.zip'
         directory: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-        
-    - name: Show build files (before)
-      run: ls ${{github.workspace}}/Function/
-         
-    
-    #- name: 'Publish AZ Function'   
-    #  run: az functionapp deployment source config-zip --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --name ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --src '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/release.zip' --build-remote true --debug 
-             
+
     - name: Upload appcode zip
       run: az storage blob upload -f ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/release.zip --container-name appcode --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --name release.zip --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --overwrite
       
@@ -224,16 +133,6 @@ jobs:
           echo "::add-mask::$publishProfiles"
           echo "::set-output name=publishProfiles::$publishProfiles"
 
-    #- name: 'Run Azure Functions Action'
-    #  uses: Azure/functions-action@v1
-    #  id: fa
-    #  with:
-    #    app-name: ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }}
-    #    package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-     #   publish-profile: ${{ steps.publishProfileRetrieval.outputs.publishProfiles }} # Remove publish-profile to use Azure RBAC
-    #    scm-do-build-during-deployment: true
-     #   enable-oryx-build: true
-        
     - name: Grab AZ FunctionApp InvokeURL
       id: functionAppInvokeRetrieval
       run: echo "AZ_FUNCTION_URL=$(az functionapp function show --name ${{ steps.TF_output.outputs.AZURE_FUNCTIONAPP_NAME }} --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --function-name webapp --query "invokeUrlTemplate" --output tsv)" >> $GITHUB_OUTPUT
@@ -246,8 +145,6 @@ jobs:
           replace: 'const api_url = "${{ steps.functionAppInvokeRetrieval.outputs.AZ_FUNCTION_URL }}";'
           regex: false
           
-    
-   
     - name: Upload updated java.css and site files
       run: |
         az storage blob upload --account-key ${{ steps.TF_output.outputs.AZURE_SA_KEY }} --account-name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --container-name \$web -f ${{ github.workspace }}/Static/script.js -n script.js --overwrite
@@ -257,8 +154,6 @@ jobs:
     - name: Get storage account URL
       id: getstoragesurl
       run:  echo "AZ_STORAGE_URL=$(az storage account show --name ${{ steps.TF_output.outputs.AZURE_SA_NAME }} --resource-group ${{ steps.TF_output.outputs.AZURE_DEV_RG_ID }} --subscription ${{ steps.TF_output.outputs.AZURE_DEV_SUB_ID }} --query "primaryEndpoints.web" --output tsv)" >> $GITHUB_OUTPUT 
-   
-
    
     - name: Cypress run
       uses: cypress-io/github-action@v5
