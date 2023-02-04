@@ -31,4 +31,23 @@ retries:	{
   })
 })
 })
+	it('click all links', 
+	() => {
+	cy.visit(Cypress.env('DEV_URL')),
+	
+	// Github
+	cy.get('.github > a').click().then((url) => {
+	cy.url().should('eq', 'https://github.com/zachchism')
+	cy.go('back')
+	})
+	
+	// Dev.to
+	cy.get('.blog > a').click()
+	cy.url().should('eq', 'https://dev.to/zachchism/my-cloud-resume-challenge-path-1l9b')
+	cy.go('back')
+	
+	// LinkedIn
+	cy.get('.linked-in > a').click()
+	cy.url().should('eq', 'https://www.linkedin.com/in/zacharyachism/')
+	})
 })
